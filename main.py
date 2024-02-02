@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import pingouin
 
-# Read men's and women's datasets
+# Read men's and women's datasets(comma sepereted values)
 men = pd.read_csv("men_results.csv")
 women = pd.read_csv("women_results.csv")
 
@@ -19,7 +19,7 @@ women_subset["group"] = "women"
 men_subset["goals_scored"] = men_subset["home_score"] + men_subset["away_score"]
 women_subset["goals_scored"] = women_subset["home_score"] + women_subset["away_score"]
 
-# Determine normality using histograms
+# Display information using histograms(for men)
 men_subset["goals_scored"].hist()
 plt.title("Statistics of men")
 plt.xlabel("Total number of goals scored in matches.")
@@ -27,6 +27,7 @@ plt.ylabel("Matches have been played with the same number of goals")
 plt.show()
 plt.clf()
 
+# Display information using histograms(for women)
 women_subset["goals_scored"].hist()
 plt.title("Statistics of women")
 plt.xlabel("Total number of goals scored in matches.")
@@ -35,7 +36,7 @@ plt.show()
 plt.clf()
 
 
-# Combine women's and men's data and calculate goals scored in each match
+# merging data on men and women and calculate goals scored in each match
 both = pd.concat([women_subset, men_subset], axis=0, ignore_index=True)
 
 # Transform the data for the pingouin Wilcoxon-Mann-Whitney
@@ -50,7 +51,7 @@ results_pg = pingouin.mwu(x=both_subset_wide["women"],
 # Extract p-value as a float
 p_val = results_pg["p-val"].values[0]
 
-# Determine hypothesis test result using sig. level. (Use a 10% significance level.)
+# Determine hypothesis test result using sig. level. (Used a 10% significance level.)
 if p_val <= 0.1:
     result = "Hypothesis rejected, there is a difference in medians between the two groups."
 else:
